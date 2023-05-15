@@ -4,7 +4,8 @@ Future improvements:
 A MyTranscription instance would have an element called `dialogue` which would be a `List[DialogueChunk]`. 
 This `DialogueChunk` would have a `List[WordToken]` and a `speaker`. This way we could simulate a conversation better 
 and closer to reality.
-Of course, every method would have to adapt to this.
+Of course, every method would have to adapt to this. I did start with this design but it got too complex for the time I 
+had so i simplified it a bit.
 3) More test cases, because you never have enough tests. Maybe even a real integration tests once we have more real 
 components to the system.
 
