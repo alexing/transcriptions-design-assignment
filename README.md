@@ -1,3 +1,14 @@
+Future improvements:
+1) Actually using a db and move to using data classes related to it. SQLalchemy is a good solution for this.
+2) Regarding this dataclasses, an improvement to its design would be to create the dataclass `DialogueChunk`. 
+A MyTranscription instance would have an element called `dialogue` which would be a `List[DialogueChunk]`. 
+This `DialogueChunk` would have a `List[WordToken]` and a `speaker`. This way we could simulate a conversation better 
+and closer to reality.
+Of course, every method would have to adapt to this.
+3) More test cases, because you never have enough tests. Maybe even a real integration tests once we have more real 
+components to the system.
+
+ -------
 The goal of this assignment is to implement a mock model for a multi-speaker transcription editing, as a direct continuation to the interview question.
 
 The assignment is open-ended and you can use any design and dependency you wish, as long as you adhere to the given constraints. We definitely encourage you to bring your own design style to the code.
