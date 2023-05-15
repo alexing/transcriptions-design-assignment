@@ -1,3 +1,8 @@
+To simulate the flow/run tests you can either:
+   - clone the repo, open it in your IDE and run the test directory.
+   - use the bash script `run_tests.sh`
+     
+
 Future improvements:
 1) Actually using a db and move to using data classes related to it. SQLalchemy is a good solution for this.
 2) Regarding this dataclasses, an improvement to its design would be to create the dataclass `DialogueChunk`. 
