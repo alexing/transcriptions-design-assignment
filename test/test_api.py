@@ -15,13 +15,13 @@ from test_data.updated_transcriptions import integration_test_transcription_1, i
 from transcription_api import Audio, EditLog, MockTranscriptionAPI
 
 
-async def mock_stuck_store(**kwargs):
-    print('awaiting 15 seconds...')
-    await sleep(15)
+async def mock_stuck_store(**kwargs) -> None:
+    print('awaiting 5 seconds...')
+    await sleep(5)
     print('store timed out!')
 
 
-async def run_async_test_store(transcription_api: MockTranscriptionAPI):
+async def run_async_test_store(transcription_api: MockTranscriptionAPI) -> None:
     # store_test_params contains a specific uid, an initial_transcript, a list of edit logs with a boolean
     # specifying if it was successful or not and the expected result transcript.
     store_test_params: List[Tuple[str, MyTranscription, List[Tuple[EditLog, bool]], MyTranscription]] = [
@@ -47,7 +47,7 @@ async def run_async_test_store(transcription_api: MockTranscriptionAPI):
                 last_finished = curr_transcript
             else:
                 tasks.append(create_task(mock_stuck_store(transcript=curr_transcript, uid=uid)))  # if store gets stuck!
-        await sleep(5)  # more simulation: sleep 5 seconds just to allow at least one of the saves to go through.
+        await sleep(10)  # more simulation: sleep 10 seconds just to allow at least one of the saves to go through.
         assert transcription_api.get_last_finished(uid=uid) == expected_transcript
         assert last_finished == expected_transcript
         await gather(*tasks)
@@ -56,15 +56,15 @@ async def run_async_test_store(transcription_api: MockTranscriptionAPI):
 class TestTranscriptionApi(unittest.TestCase):
 
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         cls.transcription_api = MockTranscriptionAPI()
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDownClass(cls) -> None:
         if os.path.exists(DB_FILE):
             os.remove(DB_FILE)
 
-    def test_transcribe(self):
+    def test_transcribe(self) -> None:
         transcribe_test_params: List[Tuple[Audio, MyTranscription]] = [
             (dummy_audios['a'], dummy_transcriptions['a']),
             (dummy_audios['b'], dummy_transcriptions['b']),
@@ -73,7 +73,7 @@ class TestTranscriptionApi(unittest.TestCase):
         for audio, expected_transcript in transcribe_test_params:
             self.assertTrue(expected_transcript == self.transcription_api.transcribe(audio))
 
-    def test_edit(self):
+    def test_edit(self) -> None:
         edit_test_params: List[Tuple[MyTranscription, EditLog, MyTranscription]] = [
             (dummy_transcriptions['a'], edit_log_1_tr_a, updated_transcription_1a),
             (dummy_transcriptions['a'], edit_log_2_tr_a, updated_transcription_2a),
@@ -85,10 +85,10 @@ class TestTranscriptionApi(unittest.TestCase):
             edited_transcript = self.transcription_api.edit(origin_transcript, edit_log)
             assert edited_transcript == expected_transcript
 
-    def test_integration_store(self):
+    def test_integration_store(self) -> None:
         run(run_async_test_store(self.transcription_api))
 
-    async def test_marked_as_stored(self):
+    async def test_marked_as_stored(self) -> None:
         edited_transcript = self.transcription_api.edit(dummy_transcriptions['a'], edit_log_2_tr_a)
         await self.transcription_api.store(transcript=edited_transcript, uid='alex')
         self.assertTrue(edited_transcript.stored)

@@ -22,7 +22,7 @@ test_transcription = MyTranscription(
 
 class TestWordToken(unittest.TestCase):
 
-    def test_word_token_creation(self):
+    def test_word_token_creation(self) -> None:
         word_token = WordToken(word='test', word_id='test_id', ts_start=0, ts_end=10, speaker='John')
         self.assertEqual(word_token.word, 'test')
         self.assertEqual(word_token.word_id, 'test_id')
@@ -30,7 +30,7 @@ class TestWordToken(unittest.TestCase):
         self.assertEqual(word_token.ts_end, 10)
         self.assertEqual(word_token.speaker, 'John')
 
-    def test_eq(self):
+    def test_eq(self) -> None:
         word_token_a = WordToken(word='test', word_id='id1', ts_start=0, ts_end=10, speaker='John')
         word_token_b = WordToken(word='test', word_id='id2', ts_start=0, ts_end=10, speaker='John')
         self.assertEqual(word_token_a, word_token_b)
@@ -38,7 +38,7 @@ class TestWordToken(unittest.TestCase):
 
 class TestMyTranscription(unittest.TestCase):
 
-    def test_my_transcription_creation(self):
+    def test_my_transcription_creation(self) -> None:
         self.assertEqual(len(test_transcription.text), 8)
         self.assertEqual(test_transcription.ts_end, 93)
         self.assertEqual(len(test_transcription.speakers), 2)
@@ -48,7 +48,7 @@ class TestMyTranscription(unittest.TestCase):
         self.assertEqual(test_transcription.transcript_id, 'tr123456')
         self.assertEqual(test_transcription.ts_end, 93)
 
-    def test_eq(self):
+    def test_eq(self) -> None:
         test_transcription_1 = MyTranscription(
             text=[WordToken(word='hi', word_id='wo1', ts_start=0, ts_end=10, speaker='John'),
                   WordToken(word='hi', word_id='wo2', ts_start=13, ts_end=23, speaker='Mary')],
@@ -70,7 +70,7 @@ class TestMyTranscription(unittest.TestCase):
 
 class Test_EditOperationBase(unittest.TestCase):
 
-    def test_execute_incorrect_transcript(self):
+    def test_execute_incorrect_transcript(self) -> None:
         edit_op = AddOp(transcript_id='tr78910', op_id='op1234', word='bye', ts_start=100, ts_end=120,
                         speaker='Mary')
         with self.assertRaises(IncorrectTranscriptError):
@@ -79,7 +79,7 @@ class Test_EditOperationBase(unittest.TestCase):
 
 class TestRemoveOp(unittest.TestCase):
 
-    def test_execute_remove_op(self):
+    def test_execute_remove_op(self) -> None:
         remove_op = RemoveOp(transcript_id='tr123456', op_id='op123', word_id='wo2')
         updated_transcription = remove_op.execute(test_transcription)
 
@@ -91,7 +91,7 @@ class TestRemoveOp(unittest.TestCase):
 
 
 class TestAddOp(unittest.TestCase):
-    def test_execute_add_op(self):
+    def test_execute_add_op(self) -> None:
         add_op = AddOp(transcript_id='tr123456', op_id='op1234', word='nice', ts_start=86, ts_end=90,
                        speaker='Mary')
 
@@ -121,7 +121,7 @@ class TestAddOp(unittest.TestCase):
 
 class TestReplaceOp(unittest.TestCase):
 
-    def test_replace_word_token(self):
+    def test_replace_word_token(self) -> None:
         replace_op = ReplaceOp(transcript_id='tr123456', op_id="op1235", replaced_word_id="wo4",
                                new_word="juan", new_ts_end=53, speaker="John")
         updated_transcription = replace_op.execute(test_transcription)

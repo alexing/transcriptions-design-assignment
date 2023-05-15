@@ -31,7 +31,7 @@ class WordToken:
     ts_end: int
     speaker: str
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, WordToken):
             return False
         return \
@@ -58,7 +58,7 @@ class MyTranscription:
         if speaker in self.speakers:
             self.speakers.remove(speaker)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object) -> bool:
         if not isinstance(other, MyTranscription):
             return False
         return \
